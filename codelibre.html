@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeLibre — Programá gratis</title>
+<style>
+:root{--bg:#0b1020;--panel:#141c31;--panel2:#1b2742;--text:#edf2ff;--muted:#9aa9c7;--accent:#7c9cff;--green:#55d6a3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,Segoe UI,sans-serif}
+header{padding:18px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #263451;background:#0e1629}
+.logo{font-size:22px;font-weight:800}.logo span{color:var(--accent)}header small{color:var(--muted)}
+main{max-width:1200px;margin:26px auto;padding:0 18px}
+h1{font-size:clamp(25px,4vw,38px);margin:0 0 8px}.intro{color:var(--muted);margin:0 0 22px}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+button,select{background:var(--panel2);color:var(--text);border:1px solid #354565;border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}
+button.primary{background:var(--accent);color:#091126;border-color:var(--accent)}button:hover{filter:brightness(1.12)}
+.workspace{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{background:var(--panel);border:1px solid #263451;border-radius:13px;overflow:hidden;min-width:0}
+.panel-head{padding:12px 15px;background:#19243c;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+textarea{display:block;width:100%;height:390px;resize:vertical;background:#0e1629;color:#dce7ff;border:0;padding:16px;font:14px/1.6 Consolas,monospace;outline:none;tab-size:2}
+iframe{width:100%;height:390px;background:white;border:0}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.info{padding:16px;color:var(--muted);line-height:1.6}.info h3{color:var(--text);margin:0 0 6px}
+#status{color:var(--green);font-size:13px}
+footer{text-align:center;color:var(--muted);padding:26px}
+@media(max-width:760px){.workspace,.bottom{grid-template-columns:1fr}textarea,iframe{height:300px}}
+</style>
+</head>
+<body>
+<header><div class="logo">⌘ <span>Code</span>Libre</div><small>Un espacio para aprender y crear gratis</small></header>
+<main>
+<h1>Tu primera línea de código empieza acá.</h1>
+<p class="intro">Escribí HTML, CSS y JavaScript, ejecutá tu proyecto y mirá el resultado al instante. No necesitás registrarte.</p>
+<div class="toolbar">
+<select id="example" aria-label="Elegir ejemplo"><option value="">Elegí un ejemplo...</option><option value="hello">Mi primera página</option><option value="button">Botón interactivo</option><option value="game">Mini juego: clic rápido</option></select>
+<button class="primary" id="run">▶ Ejecutar</button>
+<button id="reset">Limpiar editor</button>
+<button id="download">↓ Descargar proyecto</button>
+<span id="status" aria-live="polite"></span>
+</div>
+<div class="workspace">
+<section class="panel"><div class="panel-head"><span>✍️ Editor de código</span><span>HTML + CSS + JS</span></div>
+<textarea id="code" spellcheck="false" aria-label="Editor de código"><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial; text-align: center; padding: 40px; }
+    h1 { color: #526dff; }
+    button { padding: 12px 18px; border: 0; border-radius: 8px;
+             background: #526dff; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>¡Hola, mundo! 👋</h1>
+  <p>Estoy aprendiendo a programar con CodeLibre.</p>
+  <button onclick="alert('¡Ya programaste tu primer botón!')">
+    Hacé clic acá
+  </button>
+</body>
+</html></textarea></section>
+<section class="panel"><div class="panel-head"><span>🌐 Vista previa</span><span>Tu resultado</span></div><iframe id="preview" title="Vista previa del proyecto" sandbox="allow-scripts"></iframe></section>
+</div>
+<div class="bottom">
+<div class="panel info"><h3>🚀 ¿Cómo se usa?</h3>1. Escribí o modificá el código del editor.<br>2. Tocá <b>Ejecutar</b> para ver tu creación.<br>3. Probá los ejemplos o descargá tu proyecto como archivo HTML.</div>
+<div class="panel info"><h3>💡 ¿Qué podés aprender?</h3><b>HTML</b> crea la estructura de una página.<br><b>CSS</b> cambia los colores y el diseño.<br><b>JavaScript</b> agrega acciones e interactividad.</div>
+</div>
+</main>
+<footer>CodeLibre · Programar para todos, gratis.</footer>
+<script>
+const editor=document.getElementById('code'), preview=document.getElementById('preview'), status=document.getElementById('status');
+function run(){preview.srcdoc=editor.value;status.textContent='✓ Proyecto ejecutado';}
+document.getElementById('run').addEventListener('click',run);
+document.getElementById('reset').addEventListener('click',()=>{editor.value='';run();status.textContent='Editor limpio';});
+document.getElementById('download').addEventListener('click',()=>{
+ const blob=new Blob([editor.value],{type:'text/html'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='mi-proyecto.html';a.click();URL.revokeObjectURL(url);status.textContent='✓ Descarga iniciada';
+});
+const examples={
+hello:`<!DOCTYPE html>\n<html lang="es"><head><meta charset="UTF-8"><style>body{font-family:Arial;text-align:center;padding:40px;background:#f0f4ff}h1{color:#526dff}</style></head><body><h1>¡Mi primera web!</h1><p>La hice yo con CodeLibre.</p></body></html>`,
+button:`<!DOCTYPE html>\n<html lang="es"><head><meta charset="UTF-8"><style>body{font-family:Arial;text-align:center;padding:40px}button{padding:14px;background:#526dff;color:white;border:0;border-radius:9px}</style></head><body><h1>Botón interactivo</h1><button onclick="document.querySelector('p').textContent='¡Funciona! 🎉'">Probame</button><p>Esperando un clic...</p></body></html>`,
+game:`<!DOCTYPE html>\n<html lang="es"><head><meta charset="UTF-8"><style>body{font-family:Arial;text-align:center;padding:30px}button{padding:18px;background:#18a879;color:white;border:0;border-radius:12px;font-size:18px}</style></head><body><h1>Mini juego: clic rápido</h1><p id="score">Puntos: 0</p><button onclick="points++;document.getElementById('score').textContent='Puntos: '+points">¡Sumar punto!</button><script>let points=0;<\/script></body></html>`
+};
+document.getElementById('example').addEventListener('change',e=>{if(examples[e.target.value]){editor.value=examples[e.target.value];run();}});
+run();
+</script>
+</body>
+</html>
